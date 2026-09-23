@@ -35,7 +35,14 @@ export default function Wheel({ label, idBase = label, options, value, onChange,
     }
   };
 
-  const itemHeight = () => listRef.current?.firstElementChild?.offsetHeight || 1;
+  // The exact row height, fractions of a pixel included. (offsetHeight rounds
+  // to whole pixels, and on a long wheel that rounding adds up until the
+  // highlight lands a row away from where the wheel actually stopped.)
+  const itemHeight = () => {
+    const first = listRef.current?.firstElementChild;
+    if (!first) return 1;
+    return parseFloat(getComputedStyle(first).height) || first.offsetHeight || 1;
+  };
 
   const indexAtCenter = () => {
     const list = listRef.current;
