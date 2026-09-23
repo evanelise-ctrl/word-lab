@@ -1,0 +1,146 @@
+// Word parts for Made Up Words.
+//
+// Fields every part has:
+//   part     what shows on the wheel
+//   meaning  the short gloss under the wheel
+//
+// Fields used to write made-up definitions:
+//   gloss     (roots)    a noun phrase, e.g. 'light'
+//   template  (prefixes) wraps the root gloss: 'straying from {x}'
+//   template  (suffixes) wraps everything: 'relating to {x}'
+//   pos       (suffixes) part of speech the suffix creates
+//
+// Optional spelling fields on roots (see spelling.js):
+//   bare     form at the end of a word or before -ful/-less/-ment/-ness (duc -> duce, as in reduce)
+//   stem     form before a vowel suffix (meter -> metr, as in metric)
+//   supine   form before -ion, -ive, -or, -ure (duc -> duct, as in production)
+//   ible     true if the root takes -ible instead of -able (vis -> visible)
+//   ...Example fields supply the real word shown in the spelling note.
+
+export const wordData = {
+  prefixes: [
+    { part: 'a-', meaning: 'without, lacking', template: 'without {x}' },
+    { part: 'ab-', meaning: 'away from, out from', template: 'straying from {x}' },
+    { part: 'ad-', meaning: 'to, toward', template: 'drawing toward {x}' },
+    { part: 'anti-', meaning: 'against, opposing', template: 'opposing {x}' },
+    { part: 'bi-', meaning: 'two', template: 'twofold {x}' },
+    { part: 'com-', meaning: 'with, together', template: 'shared {x}' },
+    { part: 'de-', meaning: 'away from, off, down', template: 'the removal of {x}' },
+    { part: 'dis-', meaning: 'away, not, negative', template: 'the opposite of {x}' },
+    { part: 'ex-', meaning: 'out of, away from', template: 'the release of {x}' },
+    { part: 'hyper-', meaning: 'over, above, beyond', template: 'excessive {x}' },
+    { part: 'hypo-', meaning: 'under, beneath', template: 'too little {x}' },
+    { part: 'in-', meaning: 'not, or into', template: 'inward {x}' },
+    { part: 'inter-', meaning: 'between, among', template: 'the space between {x}' },
+    { part: 'micro-', meaning: 'small', template: 'tiny {x}' },
+    { part: 'mono-', meaning: 'one, single', template: 'a single source of {x}' },
+    { part: 'non-', meaning: 'not', template: 'anything but {x}' },
+    { part: 'post-', meaning: 'after, behind', template: 'what comes after {x}' },
+    { part: 'pre-', meaning: 'before', template: 'what comes before {x}' },
+    { part: 'pro-', meaning: 'forward, before', template: 'the pursuit of {x}' },
+    { part: 're-', meaning: 'back, again', template: 'a return to {x}' },
+    { part: 'sub-', meaning: 'under, below', template: 'hidden {x}' },
+    { part: 'trans-', meaning: 'across, beyond', template: '{x} that crosses boundaries' },
+    { part: 'un-', meaning: 'not, opposing', template: 'undone {x}' }
+  ],
+  roots: [
+    { part: 'anthrop', meaning: 'human', gloss: 'humankind' },
+    { part: 'astro', meaning: 'star', gloss: 'the stars' },
+    { part: 'audi', meaning: 'hear', gloss: 'hearing',
+      supine: 'audit', supineExample: 'audition', ible: true, ibleExample: 'audible' },
+    { part: 'auto', meaning: 'self', gloss: 'the self' },
+    { part: 'bio', meaning: 'life', gloss: 'life', stem: 'biot', stemExample: 'biotic' },
+    { part: 'cardi', meaning: 'heart', gloss: 'the heart' },
+    { part: 'chron', meaning: 'time', gloss: 'time' },
+    { part: 'cid', meaning: 'cut, kill', gloss: 'cutting',
+      bare: 'cide', bareExample: 'decide', supine: 'cis', supineExample: 'decision' },
+    { part: 'clud', meaning: 'close, shut', gloss: 'closing',
+      bare: 'clude', bareExample: 'include', supine: 'clus', supineExample: 'conclusion' },
+    { part: 'cred', meaning: 'believe', gloss: 'belief', ible: true, ibleExample: 'credible' },
+    { part: 'cycl', meaning: 'circle, wheel', gloss: 'circles', bare: 'cycle', bareExample: 'bicycle' },
+    { part: 'derm', meaning: 'skin', gloss: 'skin' },
+    { part: 'dict', meaning: 'say, speak', gloss: 'speech' },
+    { part: 'duc', meaning: 'lead, make', gloss: 'leading',
+      bare: 'duce', bareExample: 'reduce', supine: 'duct', supineExample: 'production',
+      ible: true, ibleExample: 'reducible' },
+    { part: 'fer', meaning: 'carry, bear', gloss: 'bearing' },
+    { part: 'flect', meaning: 'bend', gloss: 'bending' },
+    { part: 'form', meaning: 'shape', gloss: 'form' },
+    { part: 'gen', meaning: 'birth, race, produce', gloss: 'birth' },
+    { part: 'geo', meaning: 'earth', gloss: 'the earth' },
+    { part: 'graph', meaning: 'write', gloss: 'writing' },
+    { part: 'gress', meaning: 'step, go', gloss: 'stepping' },
+    { part: 'hydr', meaning: 'water', gloss: 'water' },
+    { part: 'ject', meaning: 'throw', gloss: 'throwing' },
+    { part: 'lingu', meaning: 'tongue, language', gloss: 'language' },
+    { part: 'loc', meaning: 'place', gloss: 'place' },
+    { part: 'log', meaning: 'word, reason, study', gloss: 'reason' },
+    { part: 'luc', meaning: 'light', gloss: 'light' },
+    { part: 'mand', meaning: 'order', gloss: 'orders' },
+    { part: 'meter', meaning: 'measure', gloss: 'measurement', stem: 'metr', stemExample: 'metric' },
+    { part: 'mit', meaning: 'send', gloss: 'sending',
+      stem: 'mitt', stemExample: 'admittance', supine: 'miss', supineExample: 'mission' },
+    { part: 'morph', meaning: 'form, shape', gloss: 'shape' },
+    { part: 'mort', meaning: 'death', gloss: 'death' },
+    { part: 'nat', meaning: 'born', gloss: 'birth', bare: 'nate', bareExample: 'innate' },
+    { part: 'norm', meaning: 'rule, pattern', gloss: 'the rules' },
+    { part: 'nov', meaning: 'new', gloss: 'newness' },
+    { part: 'path', meaning: 'feeling, disease', gloss: 'feeling' },
+    { part: 'ped', meaning: 'foot', gloss: 'feet' },
+    { part: 'pend', meaning: 'hang', gloss: 'hanging' },
+    { part: 'phil', meaning: 'love', gloss: 'love' },
+    { part: 'phob', meaning: 'fear', gloss: 'fear' },
+    { part: 'phon', meaning: 'sound', gloss: 'sound' },
+    { part: 'photo', meaning: 'light', gloss: 'light' },
+    { part: 'plic', meaning: 'fold', gloss: 'folding' },
+    { part: 'pon', meaning: 'put, place', gloss: 'placing',
+      bare: 'pone', bareExample: 'postpone', supine: 'posit', supineExample: 'position' },
+    { part: 'port', meaning: 'carry', gloss: 'carrying' },
+    { part: 'press', meaning: 'push, squeeze', gloss: 'pressure' },
+    { part: 'psych', meaning: 'mind, soul', gloss: 'the mind' },
+    { part: 'rog', meaning: 'ask', gloss: 'asking' },
+    { part: 'rupt', meaning: 'break, burst', gloss: 'breaking' },
+    { part: 'scop', meaning: 'look, view', gloss: 'looking', bare: 'scope', bareExample: 'microscope' },
+    { part: 'scrib', meaning: 'write', gloss: 'writing',
+      bare: 'scribe', bareExample: 'describe', supine: 'script', supineExample: 'description' },
+    { part: 'sect', meaning: 'cut', gloss: 'cutting' },
+    { part: 'sens', meaning: 'feel, sense', gloss: 'feeling',
+      bare: 'sense', bareExample: 'nonsense', ible: true, ibleExample: 'sensible' },
+    { part: 'son', meaning: 'sound', gloss: 'sound' },
+    { part: 'spect', meaning: 'look, see', gloss: 'looking' },
+    { part: 'spir', meaning: 'breathe', gloss: 'breath', bare: 'spire', bareExample: 'inspire' },
+    { part: 'struct', meaning: 'build', gloss: 'building' },
+    { part: 'tract', meaning: 'pull, drag', gloss: 'pulling' },
+    { part: 'ven', meaning: 'come', gloss: 'arrival',
+      bare: 'vene', bareExample: 'intervene', supine: 'vent', supineExample: 'invention' },
+    { part: 'vert', meaning: 'turn', gloss: 'turning',
+      supine: 'vers', supineExample: 'version', ible: true, ibleExample: 'convertible' },
+    { part: 'vis', meaning: 'see', gloss: 'sight',
+      bare: 'vise', bareExample: 'revise', ible: true, ibleExample: 'visible' },
+    { part: 'voc', meaning: 'call, voice', gloss: 'the voice', bare: 'voke', bareExample: 'provoke' },
+    { part: 'zoo', meaning: 'animal', gloss: 'animals' }
+  ],
+  suffixes: [
+    { part: '-able', meaning: 'capable of, fit for', template: 'capable of {x}', pos: 'adjective' },
+    { part: '-al', meaning: 'pertaining to', template: 'relating to {x}', pos: 'adjective' },
+    { part: '-ance', meaning: 'state or quality of', template: 'the state of {x}', pos: 'noun' },
+    { part: '-ation', meaning: 'action or process', template: 'the process of {x}', pos: 'noun' },
+    { part: '-ent', meaning: 'doing, being', template: 'giving off {x}', pos: 'adjective' },
+    { part: '-ful', meaning: 'full of', template: 'full of {x}', pos: 'adjective' },
+    { part: '-ic', meaning: 'pertaining to', template: 'having to do with {x}', pos: 'adjective' },
+    { part: '-ify', meaning: 'make, cause to be', template: 'to turn something into {x}', pos: 'verb' },
+    { part: '-ion', meaning: 'act or condition', template: 'the act of {x}', pos: 'noun' },
+    { part: '-ism', meaning: 'doctrine, belief, action', template: 'a belief in {x}', pos: 'noun' },
+    { part: '-ist', meaning: 'one who does or believes', template: 'a person devoted to {x}', pos: 'noun' },
+    { part: '-ity', meaning: 'state, quality, condition', template: 'the quality of {x}', pos: 'noun' },
+    { part: '-ive', meaning: 'having the nature of', template: 'tending toward {x}', pos: 'adjective' },
+    { part: '-ize', meaning: 'cause to be, treat with', template: 'to fill with {x}', pos: 'verb' },
+    { part: '-less', meaning: 'without', template: 'lacking {x}', pos: 'adjective' },
+    { part: '-logy', meaning: 'study of, science of', template: 'the study of {x}', pos: 'noun' },
+    { part: '-ment', meaning: 'result, process, act', template: 'the result of {x}', pos: 'noun' },
+    { part: '-ness', meaning: 'state, condition, quality', template: 'the condition of {x}', pos: 'noun' },
+    { part: '-or', meaning: 'one who, that which', template: 'someone or something that deals in {x}', pos: 'noun' },
+    { part: '-ous', meaning: 'full of, having', template: 'overflowing with {x}', pos: 'adjective' },
+    { part: '-ure', meaning: 'act, result, means', template: 'the finished form of {x}', pos: 'noun' }
+  ]
+};
