@@ -235,7 +235,7 @@ export default function Play({ dictionary, today }) {
   let dailyAction = null;
   if (result?.type === 'made' && todayData) {
     if (entry.status === 'done') dailyAction = { note: `You’re in! Voting stays open until ${RESET_TIME}.`, link: true };
-    else if (todayData.offline) dailyAction = { note: 'Entries open once the daily game’s database is connected.' };
+    else if (todayData.offline) dailyAction = { note: 'Entries are taking a quick break. You can still save this word to your dictionary.' };
     else if (myWord) dailyAction = { note: `You already entered “${myWord}” today.`, link: true };
     else if (similar?.status === 'checking') dailyAction = { note: 'Checking it isn’t too close to a real word…' };
     else if (isAlmost) dailyAction = { note: 'Too close to a real word to enter. Try changing a part.' };

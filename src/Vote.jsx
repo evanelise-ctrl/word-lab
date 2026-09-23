@@ -6,14 +6,16 @@ export default function Vote({ today }) {
   const data = today.data;
 
   if (data.offline) {
+    // For whoever runs the site: the real reason is in the console.
+    if (today.reason === 'setup') console.warn('Supabase keys are missing. See SETUP.md.');
     return (
       <section className="panel empty">
-        <h2>Voting isn’t connected yet</h2>
-        <p>
-          {today.reason === 'setup'
-            ? 'The daily game needs its database. Follow SETUP.md to turn it on.'
-            : 'The daily game’s database didn’t respond. If you just set it up, make sure supabase/daily.sql has been run, then refresh.'}
-        </p>
+        <h2>Voting is taking a break</h2>
+        <p>Today’s entries didn’t load. Check back in a bit, or keep playing in the meantime.</p>
+        <div className="empty-actions">
+          <button className="pill-link" onClick={today.refresh}>Try again</button>
+          <a className="pill-link pill-link--quiet" href="#play">Keep playing</a>
+        </div>
       </section>
     );
   }

@@ -5,11 +5,13 @@ const prefersReducedMotion = () =>
 
 // A vertical scroll wheel. The item in the center is the selection.
 // `smooth` animates changes that come from outside (like Surprise me).
-export default function Wheel({ label, idBase = label, options, value, onChange, overridden = false, smooth = false }) {
+export default function Wheel({ label, idBase = label, options, value, onChange, smooth = false }) {
   const listRef = useRef(null);
   const frame = useRef(0);
   const settleTimer = useRef(0);
-  const userActive = useRef(false); // true while the player is spinning this wheel
+  const verifyTimer = useRef(0);
+  const touching = useRef(false); // a finger is on the wheel
+  const lastUserAt = useRef(0); // when the player last touched, clicked, or scrolled this wheel
   const fromScroll = useRef(null); // index the player just scrolled to
 
   const selectedIndex = Math.max(0, options.findIndex((o) => o.part === value));
@@ -18,7 +20,19 @@ export default function Wheel({ label, idBase = label, options, value, onChange,
   latestIndex.current = selectedIndex;
 
   const markUser = () => {
-    userActive.current = true;
+    lastUserAt.current = Date.now();
+  };
+
+  // Scrolling counts as the player's while their finger is down, and for a
+  // moment after, which covers momentum scrolling and the final snap on phones.
+  const USER_WINDOW_MS = 1200;
+  const isUserScroll = () => touching.current || Date.now() - lastUserAt.current < USER_WINDOW_MS;
+
+  const commit = (i) => {
+    if (i !== latestIndex.current) {
+      fromScroll.current = i;
+      onChange(options[i].part);
+    }
   };
 
   const itemHeight = () => listRef.current?.firstElementChild?.offsetHeight || 1;
@@ -61,29 +75,60 @@ export default function Wheel({ label, idBase = label, options, value, onChange,
     return () => ro.disconnect();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => () => clearTimeout(settleTimer.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(settleTimer.current);
+      clearTimeout(verifyTimer.current);
+    },
+    []
+  );
 
-  // Only scrolling the player caused changes the selection. Scrolls the
-  // browser causes on its own (resizes, layout shifts) are undone.
+  // The wheel's position is the truth: the highlighted part and the selection
+  // always end up matching what's actually in the middle.
   const handleScroll = () => {
+    const user = isUserScroll();
+    if (user) markUser(); // keep the window open while momentum carries on
+
     cancelAnimationFrame(frame.current);
     frame.current = requestAnimationFrame(() => {
       const i = indexAtCenter();
       setCenterIndex(i);
-      if (userActive.current && i !== latestIndex.current) {
-        fromScroll.current = i;
-        onChange(options[i].part);
-      }
+      if (user) commit(i);
     });
 
     clearTimeout(settleTimer.current);
     settleTimer.current = setTimeout(() => {
-      if (!userActive.current && indexAtCenter() !== latestIndex.current) {
-        scrollToIndex(latestIndex.current, false);
-        setCenterIndex(latestIndex.current);
+      const i = indexAtCenter();
+      if (i === latestIndex.current) {
+        setCenterIndex(i);
+        return;
       }
-      userActive.current = false;
-    }, 150);
+      if (isUserScroll()) {
+        // The player's scroll came to rest here.
+        setCenterIndex(i);
+        commit(i);
+        return;
+      }
+      // A scroll the player didn't cause (a resize or layout shift): move back.
+      scrollToIndex(latestIndex.current, false);
+      clearTimeout(verifyTimer.current);
+      verifyTimer.current = setTimeout(() => {
+        // Some phones ignore that move mid-scroll. If so, accept where the wheel is.
+        const j = indexAtCenter();
+        setCenterIndex(j);
+        commit(j);
+      }, 250);
+    }, 250);
+  };
+
+  const handleTouchStart = () => {
+    touching.current = true;
+    markUser();
+  };
+
+  const handleTouchEnd = () => {
+    touching.current = false;
+    markUser();
   };
 
   const handleKeyDown = (e) => {
@@ -102,7 +147,7 @@ export default function Wheel({ label, idBase = label, options, value, onChange,
   const optionId = (i) => `${idBase}-option-${i}`;
 
   return (
-    <div className={`wheel ${overridden ? 'is-overridden' : ''}`}>
+    <div className="wheel">
       <div
         ref={listRef}
         className="wheel-list"
@@ -113,7 +158,9 @@ export default function Wheel({ label, idBase = label, options, value, onChange,
         onScroll={handleScroll}
         onKeyDown={handleKeyDown}
         onWheel={markUser}
-        onTouchStart={markUser}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
         onPointerDown={markUser}
       >
         {options.map((opt, i) => {

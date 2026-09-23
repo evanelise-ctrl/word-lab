@@ -1104,6 +1104,23 @@ div.more-panel {
   line-height: 1.45;
 }
 
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.empty-actions .pill-link {
+  margin-top: 0;
+}
+
+.pill-link.pill-link--quiet {
+  background: transparent;
+  border: 2px solid var(--cream);
+}
+
 .pill-link {
   display: inline-block;
   margin-top: 1.25rem;
